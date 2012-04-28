@@ -11,13 +11,13 @@ def read(fname):
 setup(
     name = "DateRangeParser",
     packages = ['daterangeparser'],
-    requires = ['pyparsing'],
-    version = "0.1",
+    install_requires = ['pyparsing'],
+    version = "0.1.2",
     author = "Robin Wilson",
     author_email = "robin@rtwilson.com",
     description = ("""Module to parse human-style date ranges (eg. 15th-19th March 2011) to datetimes"""),
     license = "LGPL",
-    url = "http://packages.python.org/DateRangeParse",
+    url = "https://github.com/robintw/daterangeparser",
     long_description=read('README.md'),
     classifiers=[
         "Development Status :: 4 - Beta",

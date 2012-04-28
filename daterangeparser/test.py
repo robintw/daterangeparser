@@ -8,7 +8,18 @@ class WorkingParsingTest(unittest.TestCase):
             ("3rd Jan 1980 - 2nd Jan 2013", "3/1/1980", "2/1/2013"),
             ("Wed 23 Jan - Sat 16 February 2013", "23/1/2013", "16/2/2013"),
             ("Tue 29 May - Sat 2 June 2012", "29/5/2012", "2/6/2012"),
-            ("1-9 Jul", "1/7/XXXX", "9/7/XXXX")  
+            ("1-9 Jul", "1/7/XXXX", "9/7/XXXX"),
+            ("Tuesday 19th June - Wednesday 20th June 2013", "19/6/2013", "20/6/2013"),
+            
+            # Different separators
+            ("14--16th May", "14/5/XXXX", "16/5/XXXX"),
+            ("14-16th May", "14/5/XXXX", "16/5/XXXX"),
+            ("14 - 16th May", "14/5/XXXX", "16/5/XXXX"),
+            ("14 -- 16th May", "14/5/XXXX", "16/5/XXXX"),
+            ("14--16th May", "14/5/XXXX", "16/5/XXXX"),
+            ("14 to 16th May", "14/5/XXXX", "16/5/XXXX"),
+            ("14 until 16th May", "14/5/XXXX", "16/5/XXXX"),
+            (u"14 \u2013 16th May", "14/5/XXXX", "16/5/XXXX"),
   ]
   
   def runTest(self):

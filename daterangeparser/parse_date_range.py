@@ -57,10 +57,23 @@ def post_process(res):
   - ``res`` - The results from the parsing operation, as returned by the parseString function
   
   """
-  
+
   # Get current date
   today = datetime.date.today()
+  
+  if 'start' not in res:
+    # We have a single date, not a range
+    res['start'] = {}
+    res['start']['day'] = res.end.day
+    res['start']['month'] = res.end.month
+    if 'year' not in res.end:
+      res['start']['year'] = today.year
+    else:
+      res['start']['year'] = res.end.year
     
+    res['end'] = None
+    return res
+  
   # Sort out years
   if 'year' not in res.end:
     res.end['year'] = today.year
@@ -98,8 +111,11 @@ def create_parser():
   # Ending date
   last_date = Group(full_day_string("day") + month("month") + Optional(year)("year"))
   
+  # Possible separators
+  separator = oneOf(u"- -- to until \u2013 \u2014")
+  
   # Final putting together of everything
-  daterange = first_date("start") + Literal("-").suppress() + last_date("end") + stringEnd
+  daterange = Optional(first_date("start") + separator.suppress()) + last_date("end") + stringEnd
   
   time_sep = oneOf(": .")
   am_pm = oneOf("AM am Am PM pm Pm")
@@ -138,17 +154,22 @@ def parse(text):
   parser = create_parser()
   
   result = parser.parseString(text)
+  #print result.dump()
+  #print "----------"
   res = post_process(result)
+  #print res.dump()
   
-  # Create standard dd/mm/yyyy strings
+  # Create standard dd/mm/yyyy strings and then convert to Python datetime objects
   start_str = "%(day)s/%(month)s/%(year)s" % res.start
-  end_str = "%(day)s/%(month)s/%(year)s" % res.end
-  
-  # Convert into Python datetime objects
   start_datetime = datetime.datetime.strptime(start_str, "%d/%m/%Y")
-  end_datetime = datetime.datetime.strptime(end_str, "%d/%m/%Y")
   
-  return (start_datetime, end_datetime)
+  if res.end == None:
+    return (start_datetime, None)
+  else:
+    end_str = "%(day)s/%(month)s/%(year)s" % res.end
+    end_datetime = datetime.datetime.strptime(end_str, "%d/%m/%Y")
+  
+    return (start_datetime, end_datetime)
   
 def interactive_test():
   """Sets up an interactive loop for testing date strings."""

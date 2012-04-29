@@ -34,7 +34,13 @@ class WorkingParsingTest(unittest.TestCase):
             
             # Ignorable characters
             ("14, July", "14/7/XXXX", None),
-            ("From 1st to 9th Jan 2008", "1/1/2008", "9/1/2008")
+            ("From 1st to 9th Jan 2008", "1/1/2008", "9/1/2008"),
+            ("17th, -, 19th June 1987", "17/6/1987", "19/6/1987"),
+            
+            # Ignoring of times
+            ("14th July 1988 06:45", "14/7/1988", None),
+            ("14th July 1988 06.45", "14/7/1988", None),
+            ("12:37 1st Jan - 17th Feb 19:00", "1/1/XXXX", "17/2/XXXX")
   ]
   
   def runTest(self):

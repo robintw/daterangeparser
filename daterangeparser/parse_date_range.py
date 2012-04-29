@@ -105,11 +105,18 @@ def create_parser():
   # Year
   year = Word(nums, exact=4)
   
+  time_sep = oneOf(": .")
+  am_pm = oneOf("am pm", caseless=True)
+  hours = Word(nums, max=2)
+  mins = Word(nums, max=2)
+  
+  time = hours("hour") + time_sep.suppress() + mins("mins") + Optional(am_pm)("meridian")
+  
   # Starting date
-  first_date = Group(full_day_string("day") + Optional(month)("month") + Optional(year)("year"))
+  first_date = Group(Optional(time).suppress() + full_day_string("day") + Optional(month)("month") + Optional(year)("year") + Optional(time).suppress())
   
   # Ending date
-  last_date = Group(full_day_string("day") + month("month") + Optional(year)("year"))
+  last_date = Group(Optional(time).suppress() + full_day_string("day") + month("month") + Optional(year)("year") + Optional(time).suppress())
   
   # Possible separators
   separator = oneOf(u"- -- to until \u2013 \u2014 ->", caseless=True)
@@ -119,13 +126,7 @@ def create_parser():
   
   # Final putting together of everything
   daterange = Optional(first_date("start") + separator.suppress()) + last_date("end") + stringEnd
-  
-  time_sep = oneOf(": .")
-  am_pm = oneOf("AM am Am PM pm Pm")
-  hours = Word(nums, max=2)
-  mins = Word(nums, max=2)
-  
-  time = hours("hour") + Optional(time_sep).suppress() + mins("mins") + Optional(am_pm)("meridian")
+  daterange.ignore(ignoreable_chars)
 
   return daterange
 

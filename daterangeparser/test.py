@@ -29,7 +29,7 @@ class WorkingParsingTest(unittest.TestCase):
             ("14th July 1988", "14/7/1988", None),
             ("1 May 2000", "1/5/2000", None),
             ("7 June", "7/6/XXXX", None),
-            ("Saturday 19th July 1935", "19/7/1935", None)
+            ("Saturday 19th July 1935", "19/7/1935", None),
             ("Sat 6 Aug", "6/8/XXXX", None)
   ]
   

@@ -131,7 +131,7 @@ def create_parser():
   return daterange
 
 def parse(text):
-  """Parses a date range string and returns the start and end as datetimes.
+  """Parses a date range string and returns the start and end as datetimes. 
   
   **Arguments:**
   
@@ -139,20 +139,33 @@ def parse(text):
   
   **Returns:**
   
-  A tuple ``(start, end)`` where each element is a datetime object. All times are set to 00:00 as
+  A tuple ``(start, end)`` where each element is a datetime object. If the string only defines a single
+  date then the tuple is ``(date, None)``. All times in the datetime objects are set to 00:00 as
   this function only parses dates.
   
-  This should work on a wide variety of human-style string formats, including:
+  **Accepted formats:**
+  
+  This parsing routine works with date ranges and single dates, and should work with a wide variety of
+  human-style string formats, including:
   
   - 27th-29th June 2010
-  - 30 May - 9th Aug
+  - 30 May to 9th Aug
   - 3rd Jan 1980 - 2nd Jan 2013
   - Wed 23 Jan - Sat 16 February 2013
-  - Tue 29 May - Sat 2 June 2012
-  - 1-9 Jul
+  - Tuesday 29 May -> Sat 2 June 2012
+  - From 27th to 29th March 1999
+  - 1--9 Jul
+  - 14th July 1988
+  - 23rd October 7:30pm
+  - From 07:30 18th Nov to 17:00 24th Nov
   
-  If no year is specified then the current year is used. All day names are ignored, so there is no checking
-  to see whether, for example, the 23rd Jan 2013 is actually a Wednesday.
+  **Notes:**
+  
+  - If no year is specified then the current year is used.
+  - All day names are ignored, so there is no checking to see whether, for example, the 23rd Jan 2013 is actually a Wednesday.
+  - All times are ignored, assuming they are placed either before or after each date, otherwise they will cause an error.
+  - The separators that are allows as part of the date range are `to`, `until`, `-`, `--` and `->`, plus the unicode em and en dashes.
+  - Other punctuation, such as commas, is ignored.
   
   """
   parser = create_parser()

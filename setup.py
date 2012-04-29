@@ -6,7 +6,7 @@ setup(
     name = "DateRangeParser",
     packages = ['daterangeparser'],
     install_requires = ['pyparsing'],
-    version = "0.5.2",
+    version = "0.5.3",
     author = "Robin Wilson",
     author_email = "robin@rtwilson.com",
     description = ("""Module to parse human-style date ranges (eg. 15th-19th March 2011) to datetimes"""),
@@ -24,6 +24,8 @@ setup(
       - 14th July 1988 *(it works with single dates too!)*
       - 07:00 Tue 7th June - 17th July 3:30pm *(it ignores times, currently)*
     
+    DateRangeParser can be installed by running ``pip install daterangeparser``.    
+      
     Full documentation is provided at http://daterangeparser.readthedocs.org/ and the code (and development information)
     is available at https://github.com/robintw/daterangeparser.""",
     classifiers=[

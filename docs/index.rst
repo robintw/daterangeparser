@@ -36,11 +36,21 @@ Using DateRangeParser is very easy - simply follow the steps below.
 
 What formats will this work with?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Most date range formats that use specific dates (rather than 'tomorrow' or 'last wednesday') should work fine. Examples that are known to work include:
+Most date range formats that use specific dates (rather than 'tomorrow' or 'last wednesday') should work fine. The parser works for date ranges and single dates (in this case returning a start date and `None` for the end date), and ignores any time details that are in the strings.
+
+Examples that are known to work include:
 
 - 27th-29th June 2010
-- 30 May - 9th Aug
-- 3rd Jan 1980 - 2nd Jan 2013
-- Wed 23 Jan - Sat 16 February 2013
-- Tue 29 May - Sat 2 June 2012
-- 1-9 Jul
+- 30 May to 9th Aug
+- 3rd Jan 1980 -- 2nd Jan 2013
+- Wed 23 Jan -> Sat 16 February 2013
+- Tuesday 29 May - Sat 2 June 2012
+- From 1 to 9 Jul
+- 14th July 1988
+- 07:00 Tue 7th June - 17th July 3:30pm
+
+More details are available in the function documentation below.
+
+Function Documentation
+^^^^^^^^^^^^^^^^^^^^^^
+.. autofunction:: daterangeparser.parse

@@ -30,7 +30,11 @@ class WorkingParsingTest(unittest.TestCase):
             ("1 May 2000", "1/5/2000", None),
             ("7 June", "7/6/XXXX", None),
             ("Saturday 19th July 1935", "19/7/1935", None),
-            ("Sat 6 Aug", "6/8/XXXX", None)
+            ("Sat 6 Aug", "6/8/XXXX", None),
+            
+            # Ignorable characters
+            ("14, July", "14/7/XXXX", None),
+            ("From 1st to 9th Jan 2008", "1/1/2008", "9/1/2008")
   ]
   
   def runTest(self):
@@ -48,5 +52,5 @@ class WorkingParsingTest(unittest.TestCase):
       
       result = parse(text)
       
-      assert result[0] == start_dt, "Error with string %s. %s not equal to %s" % (text, result[0], start_dt)
-      assert result[1] == end_dt, "Error with string %s. %s not equal to %s" % (text, result[1], end_dt)
+      assert result[0] == start_dt, "Error with string %s.\nGot %s, should be %s" % (text, result[0], start_dt)
+      assert result[1] == end_dt, "Error with string %s.\nGot %s, should be %s" % (text, result[1], end_dt)

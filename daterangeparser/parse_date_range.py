@@ -112,7 +112,10 @@ def create_parser():
   last_date = Group(full_day_string("day") + month("month") + Optional(year)("year"))
   
   # Possible separators
-  separator = oneOf(u"- -- to until \u2013 \u2014 ->")
+  separator = oneOf(u"- -- to until \u2013 \u2014 ->", caseless=True)
+  
+  # Strings to completely ignore (whitespace ignored by default)
+  ignoreable_chars = oneOf(", from", caseless=True)
   
   # Final putting together of everything
   daterange = Optional(first_date("start") + separator.suppress()) + last_date("end") + stringEnd

@@ -39,7 +39,8 @@ class WorkingParsingTest(unittest.TestCase):
             
             # Ignoring of times
             ("14th July 1988 06:45", "14/7/1988", None),
-            ("14th July 1988 06.45", "14/7/1988", None),
+            ("14th July 1988 06.45am", "14/7/1988", None),
+            ("14th July 1988 3:30pm", "14/7/1988", None),
             ("12:37 1st Jan - 17th Feb 19:00", "1/1/XXXX", "17/2/XXXX")
   ]
   

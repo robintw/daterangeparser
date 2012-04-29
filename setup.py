@@ -6,7 +6,7 @@ setup(
     name = "DateRangeParser",
     packages = ['daterangeparser'],
     install_requires = ['pyparsing'],
-    version = "0.3",
+    version = "0.5.2",
     author = "Robin Wilson",
     author_email = "robin@rtwilson.com",
     description = ("""Module to parse human-style date ranges (eg. 15th-19th March 2011) to datetimes"""),
@@ -16,11 +16,13 @@ setup(
     a human-style string. For example, it can parse strings like:
     
       - 27th-29th June 2010
-      - 30 May - 9th Aug
-      - 3rd Jan 1980 - 2nd Jan 2013
-      - Wed 23 Jan - Sat 16 February 2013
+      - 30 May to 9th Aug
+      - 3rd Jan 1980 -- 2nd Jan 2013
+      - Wed 23 Jan -> Sat 16 February 2013
       - Tuesday 29 May - Sat 2 June 2012
-      - 1-9 Jul
+      - From 1 to 9 Jul
+      - 14th July 1988 *(it works with single dates too!)*
+      - 07:00 Tue 7th June - 17th July 3:30pm *(it ignores times, currently)*
     
     Full documentation is provided at http://daterangeparser.readthedocs.org/ and the code (and development information)
     is available at https://github.com/robintw/daterangeparser.""",

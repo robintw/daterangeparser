@@ -6,7 +6,7 @@ setup(
     name = "DateRangeParser",
     packages = ['daterangeparser'],
     install_requires = ['pyparsing'],
-    version = "0.5.3",
+    version = "0.6",
     author = "Robin Wilson",
     author_email = "robin@rtwilson.com",
     description = ("""Module to parse human-style date ranges (eg. 15th-19th March 2011) to datetimes"""),

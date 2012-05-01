@@ -1,6 +1,7 @@
 import unittest
 import datetime
 from parse_date_range import parse
+from pyparsing import ParseException
 
 class WorkingParsingTest(unittest.TestCase):
   tests = [ 
@@ -41,7 +42,12 @@ class WorkingParsingTest(unittest.TestCase):
             ("14th July 1988 06:45", "14/7/1988", None),
             ("14th July 1988 06.45am", "14/7/1988", None),
             ("14th July 1988 3:30pm", "14/7/1988", None),
-            ("12:37 1st Jan - 17th Feb 19:00", "1/1/XXXX", "17/2/XXXX")
+            ("12:37 1st Jan - 17th Feb 19:00", "1/1/XXXX", "17/2/XXXX"),
+            
+            # Things in different orders
+            ("July 14", "14/7/XXXX", None),
+            ("1990, Dec 29 - 1992, Dec 14", "29/12/1990", "14/12/1992"),
+            ("Thurs Nov 11th 1954", "11/11/1954", None)
   ]
   
   def runTest(self):
@@ -59,5 +65,21 @@ class WorkingParsingTest(unittest.TestCase):
       
       result = parse(text)
       
-      assert result[0] == start_dt, "Error with string %s.\nGot %s, should be %s" % (text, result[0], start_dt)
-      assert result[1] == end_dt, "Error with string %s.\nGot %s, should be %s" % (text, result[1], end_dt)
+      self.assertEqual(result[0],start_dt, "Error with string %s.\nGot %s, should be %s" % (text, result[0], start_dt))
+      self.assertEqual(result[1], end_dt, "Error with string %s.\nGot %s, should be %s" % (text, result[1], end_dt))
+      
+      
+class FailingParsings(unittest.TestCase):
+  tests = [ 
+            # Various 
+            "27th Blah",
+            "abfgsfgetgrw",
+            "534th Jan 2010",
+            "10th Aug 12345",
+            "Turs 13th May 1998",
+            "18 Octobre 2004",
+  ]
+  
+  def runTest(self):
+    for test in self.tests:
+      self.assertRaises(ParseException, parse, test)

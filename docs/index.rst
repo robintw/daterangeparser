@@ -47,6 +47,9 @@ Examples that are known to work include:
 - Tuesday 29 May - Sat 2 June 2012
 - From 1 to 9 Jul
 - 14th July 1988
+- July 14th 1988
+- 1988 14th July
+- Nov 18th - 23rd Dec
 - 07:00 Tue 7th June - 17th July 3:30pm
 
 More details are available in the function documentation below.

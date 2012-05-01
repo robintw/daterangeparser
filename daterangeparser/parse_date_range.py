@@ -9,6 +9,8 @@ def check_day(tokens):
   t = int(tokens[0])
   if t >= 1 and t <= 31:
     return t
+  else:
+    raise ParseException()
     
 def month_to_number(tokens):
   """Converts a given month in string format to the equivalent month number.
@@ -95,7 +97,7 @@ def create_parser():
   superscript = oneOf("th rd st nd", caseless=True)
   day = oneOf("Mon Monday Tue Tues Tuesday Wed Weds Wednesday Thu Thur Thurs Thursday Fri Friday Sat Saturday Sun Sunday", caseless=True)
   
-  full_day_string = Optional(day).suppress() + daynum + Optional(superscript).suppress()
+  full_day_string = daynum + Optional(superscript).suppress()
   full_day_string.setParseAction(check_day)
   
   # Month names, with abbreviations, with action to convert to equivalent month number
@@ -104,6 +106,7 @@ def create_parser():
   
   # Year
   year = Word(nums, exact=4)
+  year.setParseAction(lambda tokens: int(tokens[0]))
   
   time_sep = oneOf(": .")
   am_pm = oneOf("am pm", caseless=True)
@@ -113,10 +116,10 @@ def create_parser():
   time = hours("hour") + time_sep.suppress() + mins("mins") + Optional(am_pm)("meridian")
   
   # Starting date
-  first_date = Group(Optional(time).suppress() + full_day_string("day") + Optional(month)("month") + Optional(year)("year") + Optional(time).suppress())
+  first_date = Group(Optional(time).suppress() & Optional(day).suppress() & full_day_string("day") & Optional(month("month")) & Optional(year("year")))
   
   # Ending date
-  last_date = Group(Optional(time).suppress() + full_day_string("day") + month("month") + Optional(year)("year") + Optional(time).suppress())
+  last_date = Group(Optional(time).suppress() & Optional(day).suppress() & full_day_string("day") & month("month") & Optional(year("year")))
   
   # Possible separators
   separator = oneOf(u"- -- to until \u2013 \u2014 ->", caseless=True)
@@ -161,6 +164,7 @@ def parse(text):
   
   **Notes:**
   
+  - If an error encountered while parsing the date range then a `pyparsing.ParseException` will be raised.
   - If no year is specified then the current year is used.
   - All day names are ignored, so there is no checking to see whether, for example, the 23rd Jan 2013 is actually a Wednesday.
   - All times are ignored, assuming they are placed either before or after each date, otherwise they will cause an error.

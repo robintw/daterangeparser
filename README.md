@@ -13,3 +13,7 @@ Developers
 All feature requests and bugs are stored in the GitHub issues - please look there before doing any work.
 
 Please add tests for any new features to `test.py`. Tests can be executed by running `nosetests` in the root directory.
+
+License
+-------
+This code is released under the Lesser General Public License. See the COPYING and COPYING.LESSER file for more information.

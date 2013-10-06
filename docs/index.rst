@@ -5,6 +5,8 @@ Introduction
 ------------
 DateRangeParser is a Python module which makes it easy to parse human-style date ranges like "4-8th May" or "Wed 19th June - Thurs 30th August 2014". It is very simple, consisting of one `parse` method which does the parsing.
 
+This module is released under the GNU Lesser General Public License - see the COPYING and COPYING.LESSER files in the source directory for details.
+
 Installation
 ------------
 DateRangeParser can be installed from the Python Package Index by running::
@@ -51,9 +53,29 @@ Examples that are known to work include:
 - 1988 14th July
 - Nov 18th - 23rd Dec
 - 07:00 Tue 7th June - 17th July 3:30pm
+- Jan - Mar (gives dates from the first day in the first month to the last day in the second month, taking into account leap years)
 
 More details are available in the function documentation below.
 
 Function Documentation
 ^^^^^^^^^^^^^^^^^^^^^^
 .. autofunction:: daterangeparser.parse
+
+Release Notes
+-------------
+
+0.7
+^^^
+Added ability to parse dates with no days specified - they will default to the first or last day of the month.
+
+For example:
+
+"Sep 2011 - Nov 2013" will produce 01/09/2011 to 30/11/2013
+
+This also works with single dates:
+
+"July" will produce 01/07/XXXX (where XXXX is the current year)
+
+0.6
+^^^
+First release with main functionality.

@@ -64,7 +64,7 @@ Function Documentation
 Release Notes
 -------------
 
-0.7
+1.0
 ^^^
 Added ability to parse dates with no days specified - they will default to the first or last day of the month.
 
@@ -75,6 +75,8 @@ For example:
 This also works with single dates:
 
 "July" will produce 01/07/XXXX (where XXXX is the current year)
+
+Fixed minor bugs, and bumped to stable release of version 1.0
 
 0.6
 ^^^

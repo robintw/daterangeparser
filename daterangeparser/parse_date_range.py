@@ -83,20 +83,49 @@ def post_process(res):
   if 'start' not in res:
     # We have a single date, not a range
     res['start'] = {}
-    res['start']['day'] = res.end.day
-    res['start']['month'] = res.end.month
-    if 'year' not in res.end:
-      res['start']['year'] = today.year
-    else:
+
+    if 'month' not in res.end and 'day' not in res.end:
+      # We have only got a year, so go from start to end of the year
       res['start']['year'] = res.end.year
-    if res['start']['day'] == '':
-      # special case - treat bare month as a range from start to end of month
+      res['start']['month'] = 1
       res['start']['day'] = 1
-      res['end']['day'] = calendar.monthrange(today.year, res.end.month)[1]
-    else:
-      res['end'] = None
+
+      res['end']['month'] = 12
+      res['end']['day'] = 31
       return res
-  
+    elif 'month' in res.end and 'day' not in res.end:
+      # special case - treat bare month as a range from start to end of month
+      if 'year' not in res.end or res.end.year == "":
+        res['start']['year'] = today.year
+        res['end']['year'] = today.year
+      else:
+        res['start']['year'] = res.end.year
+
+      res['start']['day'] = 1
+      res['start']['month'] = res.end.month
+      res['end']['day'] = calendar.monthrange(res['start']['year'], res.end.month)[1]
+    else:
+      res['start']['day'] = res.end.day
+      res['start']['month'] = res.end.month
+
+      if 'year' not in res.end:
+        res['start']['year'] = today.year
+      else:
+        res['start']['year'] = res.end.year
+
+      res['end'] = None
+
+    return res
+
+  if 'month' not in res.end and 'month' not in res.start and 'day' not in res.end and 'day' not in res.start:
+    # No months or days given, just years
+    res['start']['month'] = 1
+    res['start']['day'] = 1
+
+    res['end']['month'] = 12
+    res['end']['day'] = 31
+    return res
+
   # Sort out years
   if 'year' not in res.end:
     res.end['year'] = today.year
@@ -146,7 +175,7 @@ def create_parser():
   first_date = Group(Optional(time).suppress() & Optional(day).suppress() & Optional(full_day_string("day")) & Optional(month("month")) & Optional(year("year")))
   
   # Ending date
-  last_date = Group(Optional(time).suppress() & Optional(day).suppress() & Optional(full_day_string("day")) & month("month") & Optional(year("year")))
+  last_date = Group(Optional(time).suppress() & Optional(day).suppress() & Optional(full_day_string("day")) & Optional(month("month")) & Optional(year("year")))
   
   # Possible separators
   separator = oneOf(u"- -- to until \u2013 \u2014 ->", caseless=True)
@@ -203,20 +232,26 @@ def parse(text):
   
   print text
   result = parser.parseString(text)
-  #print result.dump()
-  #print "----------"
+  print result.dump()
+  print "----------"
   res = post_process(result)
-  #print res.dump()
+  print res.dump()
   
   # Create standard dd/mm/yyyy strings and then convert to Python datetime objects
-  start_str = "%(day)s/%(month)s/%(year)s" % res.start
-  start_datetime = datetime.datetime.strptime(start_str, "%d/%m/%Y")
+  try:
+    start_str = "%(day)s/%(month)s/%(year)s" % res.start
+    start_datetime = datetime.datetime.strptime(start_str, "%d/%m/%Y")
+  except ValueError:
+    raise ParseException("Couldn't parse resulting datetime")
   
   if res.end == None:
     return (start_datetime, None)
   else:
-    end_str = "%(day)s/%(month)s/%(year)s" % res.end
-    end_datetime = datetime.datetime.strptime(end_str, "%d/%m/%Y")
+    try:
+      end_str = "%(day)s/%(month)s/%(year)s" % res.end
+      end_datetime = datetime.datetime.strptime(end_str, "%d/%m/%Y")
+    except ValueError:
+      raise ParseException("Couldn't parse resulting datetime")
   
     return (start_datetime, end_datetime)
   

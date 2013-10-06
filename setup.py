@@ -22,7 +22,7 @@ setup(
     name = "DateRangeParser",
     packages = ['daterangeparser'],
     install_requires = ['pyparsing'],
-    version = "1.1",
+    version = "1.1.1",
     author = "Robin Wilson",
     author_email = "robin@rtwilson.com",
     description = ("""Module to parse human-style date ranges (eg. 15th-19th March 2011) to datetimes"""),

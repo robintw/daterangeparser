@@ -64,8 +64,8 @@ Function Documentation
 Release Notes
 -------------
 
-1.1
-^^^
+1.1.1
+^^^^^
 Modified so that "July" now produces a range from the 1st to the 31st July.
 
 Added ranges based only on years, so "2013" produces a range from 1st Jan 2013 to the 31st Dec 2013, and similarly

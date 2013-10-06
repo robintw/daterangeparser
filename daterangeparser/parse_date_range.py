@@ -230,12 +230,12 @@ def parse(text):
   """
   parser = create_parser()
   
-  print text
+  #print text
   result = parser.parseString(text)
-  print result.dump()
-  print "----------"
+  #print result.dump()
+  #print "----------"
   res = post_process(result)
-  print res.dump()
+  #print res.dump()
   
   # Create standard dd/mm/yyyy strings and then convert to Python datetime objects
   try:

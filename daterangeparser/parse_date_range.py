@@ -90,7 +90,7 @@ def post_process(res):
     else:
       res['start']['year'] = res.end.year
     if res['start']['day'] == '':
-      # special case - treat bare month as range
+      # special case - treat bare month as a range from start to end of month
       res['start']['day'] = 1
       res['end']['day'] = calendar.monthrange(today.year, res.end.month)[1]
     else:

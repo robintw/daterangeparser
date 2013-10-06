@@ -63,7 +63,12 @@ class WorkingParsingTest(unittest.TestCase):
             # Things in different orders
             ("July 14", "14/7/XXXX", None),
             ("1990, Dec 29 - 1992, Dec 14", "29/12/1990", "14/12/1992"),
-            ("Thurs Nov 11th 1954", "11/11/1954", None)
+            ("Thurs Nov 11th 1954", "11/11/1954", None),
+
+            # Dates with no days
+            ("July", "01/07/XXXX", None),
+            ("Feb to Nov", "01/02/XXXX", "30/11/XXXX"),
+            ("Feb 2010 - Feb 2012", "01/02/2010", "29/02/2012")
   ]
   
   def runTest(self):

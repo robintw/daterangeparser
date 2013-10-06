@@ -16,6 +16,7 @@
 
 from pyparsing import *
 import datetime
+import calendar
 
 def check_day(tokens):
   """Converts to int and checks a day number, ensuring it is > 1 and < 31.
@@ -83,6 +84,8 @@ def post_process(res):
     # We have a single date, not a range
     res['start'] = {}
     res['start']['day'] = res.end.day
+    if res['start']['day'] == '':
+      res['start']['day'] = 1
     res['start']['month'] = res.end.month
     if 'year' not in res.end:
       res['start']['year'] = today.year
@@ -102,6 +105,12 @@ def post_process(res):
   # Sort out months
   if 'month' not in res.start:
     res.start['month'] = res.end.month
+
+  if 'day' not in res.start or res.start['day'] == '':
+    res.start['day'] = 1
+
+  if 'day' not in res.end or res.end['day'] == '':
+    res.end['day'] = calendar.monthrange(res.end.year, res.end.month)[1]
   
   return res
 
@@ -132,10 +141,10 @@ def create_parser():
   time = hours("hour") + time_sep.suppress() + mins("mins") + Optional(am_pm)("meridian")
   
   # Starting date
-  first_date = Group(Optional(time).suppress() & Optional(day).suppress() & full_day_string("day") & Optional(month("month")) & Optional(year("year")))
+  first_date = Group(Optional(time).suppress() & Optional(day).suppress() & Optional(full_day_string("day")) & Optional(month("month")) & Optional(year("year")))
   
   # Ending date
-  last_date = Group(Optional(time).suppress() & Optional(day).suppress() & full_day_string("day") & month("month") & Optional(year("year")))
+  last_date = Group(Optional(time).suppress() & Optional(day).suppress() & Optional(full_day_string("day")) & month("month") & Optional(year("year")))
   
   # Possible separators
   separator = oneOf(u"- -- to until \u2013 \u2014 ->", caseless=True)
@@ -144,7 +153,7 @@ def create_parser():
   ignoreable_chars = oneOf(", from", caseless=True)
   
   # Final putting together of everything
-  daterange = Optional(first_date("start") + separator.suppress()) + last_date("end") + stringEnd
+  daterange = Optional(first_date("start") + Optional(time).suppress() + separator.suppress()) + last_date("end") + Optional(time).suppress() + stringEnd
   daterange.ignore(ignoreable_chars)
 
   return daterange
@@ -190,6 +199,7 @@ def parse(text):
   """
   parser = create_parser()
   
+  print text
   result = parser.parseString(text)
   #print result.dump()
   #print "----------"

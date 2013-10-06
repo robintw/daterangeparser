@@ -66,9 +66,13 @@ class WorkingParsingTest(unittest.TestCase):
             ("Thurs Nov 11th 1954", "11/11/1954", None),
 
             # Dates with no days
-            ("July", "01/07/XXXX", None),
+            ("July", "01/07/XXXX", "31/07/XXXX"),
             ("Feb to Nov", "01/02/XXXX", "30/11/XXXX"),
             ("Feb 2010 - Feb 2012", "01/02/2010", "29/02/2012")
+
+            # Bare year - doesn't work yet
+            #("2013", "01/01/2013", "31/12/2013"),
+            #("1995 - 2010", "01/01/1995", "31/12/2010"),
   ]
   
   def runTest(self):

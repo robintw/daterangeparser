@@ -84,16 +84,18 @@ def post_process(res):
     # We have a single date, not a range
     res['start'] = {}
     res['start']['day'] = res.end.day
-    if res['start']['day'] == '':
-      res['start']['day'] = 1
     res['start']['month'] = res.end.month
     if 'year' not in res.end:
       res['start']['year'] = today.year
     else:
       res['start']['year'] = res.end.year
-    
-    res['end'] = None
-    return res
+    if res['start']['day'] == '':
+      # special case - treat bare month as range
+      res['start']['day'] = 1
+      res['end']['day'] = calendar.monthrange(today.year, res.end.month)[1]
+    else:
+      res['end'] = None
+      return res
   
   # Sort out years
   if 'year' not in res.end:

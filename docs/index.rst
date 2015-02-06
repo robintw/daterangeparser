@@ -65,6 +65,12 @@ Function Documentation
 Release Notes
 -------------
 
+1.2
+^^^
+Now works on both Python 2 and Python 3
+
+Modified so that the start month is used if the end month doesn't exist (so something like "Jan 10th-11th" will now work)
+
 1.1.1
 ^^^^^
 Modified so that "July" now produces a range from the 1st to the 31st July.

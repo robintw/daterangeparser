@@ -248,6 +248,8 @@ def parse(text):
     return (start_datetime, None)
   else:
     try:
+      if "month" not in res.end:
+        res.end["month"] = res.start["month"]
       end_str = "%(day)s/%(month)s/%(year)s" % res.end
       end_datetime = datetime.datetime.strptime(end_str, "%d/%m/%Y")
     except ValueError:

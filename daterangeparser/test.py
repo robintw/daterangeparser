@@ -29,6 +29,7 @@ class WorkingParsingTest(unittest.TestCase):
             ("Tuesday 29 May - Sat 2 June 2012", "29/5/2012", "2/6/2012"),
             ("1-9 Jul", "1/7/XXXX", "9/7/XXXX"),
             ("Tuesday 19th June - Wednesday 20th June 2013", "19/6/2013", "20/6/2013"),
+            ("January 10th - 11th", "10/1/XXXX", "11/1/XXXX"),
             
             # Different separators
             ("14--16th May", "14/5/XXXX", "16/5/XXXX"),

@@ -278,10 +278,10 @@ def interactive_test():
     start_datetime = datetime.datetime.strptime(start_str, "%d/%m/%Y")
     end_datetime = datetime.datetime.strptime(end_str, "%d/%m/%Y")
     
-    print text
-    print "From: %s" % start_str
-    print "To: %s" % end_str
-    print start_datetime
-    print end_datetime
-  print "----"
+    print(text)
+    print("From: %s" % start_str)
+    print("To: %s" % end_str)
+    print(start_datetime)
+    print(end_datetime)
+  print("----")
   #print res.dump()

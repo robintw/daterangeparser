@@ -16,7 +16,7 @@
 
 import unittest
 import datetime
-from parse_date_range import parse
+from .parse_date_range import parse
 from pyparsing import ParseException
 
 class WorkingParsingTest(unittest.TestCase):

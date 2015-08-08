@@ -79,7 +79,7 @@ def post_process(res):
 
   # Get current date
   today = datetime.date.today()
-  
+
   if 'start' not in res:
     # We have a single date, not a range
     res['start'] = {}
@@ -238,6 +238,11 @@ def parse(text):
   #print res.dump()
   
   # Create standard dd/mm/yyyy strings and then convert to Python datetime objects
+
+  if 'year' not in res.start:
+    # in case only separator was given
+    raise ParseException("Couldn't parse resulting datetime")
+
   try:
     start_str = "%(day)s/%(month)s/%(year)s" % res.start
     start_datetime = datetime.datetime.strptime(start_str, "%d/%m/%Y")

@@ -88,12 +88,12 @@ class WorkingParsingTest(unittest.TestCase):
         end_dt = datetime.datetime.strptime(end, "%d/%m/%Y")
       else:
         end_dt = None
-      
+
       result = parse(text)
-      
+
       self.assertEqual(result[0],start_dt, "Error with string %s.\nGot %s, should be %s" % (text, result[0], start_dt))
       self.assertEqual(result[1], end_dt, "Error with string %s.\nGot %s, should be %s" % (text, result[1], end_dt))
-      
+
       
 class FailingParsings(unittest.TestCase):
   tests = [ 
@@ -104,6 +104,7 @@ class FailingParsings(unittest.TestCase):
             "10th Aug 12345",
             "Turs 13th May 1998",
             "18 Octobre 2004",
+            "to",
   ]
   
   def runTest(self):

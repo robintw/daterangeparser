@@ -55,6 +55,7 @@ def month_to_number(tokens):
                   'aug' : 8,
                   'august' : 8,
                   'sep' : 9,
+                  'sept' : 9,
                   'september' : 9,
                   'oct' : 10,
                   'october' : 10,

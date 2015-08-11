@@ -105,6 +105,7 @@ class FailingParsings(unittest.TestCase):
             "Turs 13th May 1998",
             "18 Octobre 2004",
             "to",
+            "00000",
   ]
   
   def runTest(self):

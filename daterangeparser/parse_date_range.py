@@ -18,16 +18,19 @@ from pyparsing import *
 import datetime
 import calendar
 
-def check_day(tokens):
-  """Converts to int and checks a day number, ensuring it is > 1 and < 31.
-  
+
+def check_day(tokens=None):
   """
-  
+  Converts to int and checks a day number, ensuring it is > 1 and < 31.
+  """
+  if not tokens:
+    raise ParseException("Couldn't parse resulting datetime")
+
   t = int(tokens[0])
   if t >= 1 and t <= 31:
     return t
   else:
-    raise ParseException()
+    raise ParseException("Couldn't parse resulting datetime")
     
 def month_to_number(tokens):
   """Converts a given month in string format to the equivalent month number.

@@ -18,6 +18,33 @@ from pyparsing import *
 import datetime
 import calendar
 
+MONTHS = {
+  'jan': 1,
+  'january': 1,
+  'feb': 2,
+  'february': 2,
+  'mar': 3,
+  'march': 3,
+  'apr': 4,
+  'april': 4,
+  'may': 5,
+  'jun': 6,
+  'june': 6,
+  'jul': 7,
+  'july': 7,
+  'aug': 8,
+  'august': 8,
+  'sep': 9,
+  'sept': 9,
+  'september': 9,
+  'oct': 10,
+  'october': 10,
+  'nov': 11,
+  'november': 11,
+  'dec': 12,
+  'december': 12
+}
+
 
 def check_day(tokens=None):
   """
@@ -33,39 +60,13 @@ def check_day(tokens=None):
     raise ParseException("Couldn't parse resulting datetime")
     
 def month_to_number(tokens):
-  """Converts a given month in string format to the equivalent month number.
+  """
+  Converts a given month in string format to the equivalent month number.
   
   Works with strings in any case, both abbreviated (Jan) and full (January).
-  
   """
-  
-  conversions = { 'jan' : 1,
-                  'january' : 1,
-                  'feb' : 2,
-                  'february' : 2,
-                  'mar' : 3,
-                  'march' : 3,
-                  'apr' : 4,
-                  'april' : 4,
-                  'may' : 5,
-                  'jun' : 6,
-                  'june': 6,
-                  'jul' : 7,
-                  'july' : 7,
-                  'aug' : 8,
-                  'august' : 8,
-                  'sep' : 9,
-                  'sept' : 9,
-                  'september' : 9,
-                  'oct' : 10,
-                  'october' : 10,
-                  'nov' : 11,
-                  'november' : 11,
-                  'dec' : 12,
-                  'december' : 12}
-                  
   month_name = tokens[0].lower()
-  return conversions[month_name]
+  return MONTHS[month_name]
 
 def post_process(res):
   """Perform post-processing on the results of the date range parsing.
@@ -161,7 +162,7 @@ def create_parser():
   full_day_string.setParseAction(check_day)
   
   # Month names, with abbreviations, with action to convert to equivalent month number
-  month = oneOf("Jan January Feb February Mar March Apr April May Jun June Jul July Aug August Sep September Oct October Nov November Dec December", caseless=True)
+  month = oneOf(MONTHS.keys(), caseless=True)
   month.setParseAction(month_to_number)
   
   # Year
@@ -185,7 +186,7 @@ def create_parser():
   separator = oneOf(u"- -- to until \u2013 \u2014 ->", caseless=True)
   
   # Strings to completely ignore (whitespace ignored by default)
-  ignoreable_chars = oneOf(", from", caseless=True)
+  ignoreable_chars = oneOf(", from starting beginning", caseless=True)
   
   # Final putting together of everything
   daterange = Optional(first_date("start") + Optional(time).suppress() + separator.suppress()) + last_date("end") + Optional(time).suppress() + stringEnd

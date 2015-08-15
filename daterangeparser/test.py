@@ -53,6 +53,7 @@ class WorkingParsingTest(unittest.TestCase):
             # Ignorable characters
             ("14, July", "14/7/XXXX", None),
             ("From 1st to 9th Jan 2008", "1/1/2008", "9/1/2008"),
+            ("beGinning 1st to 9th Sept 2008", "1/9/2008", "9/9/2008"),
             ("17th, -, 19th June 1987", "17/6/1987", "19/6/1987"),
             
             # Ignoring of times

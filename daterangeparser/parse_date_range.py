@@ -145,7 +145,8 @@ def post_process(res):
   if 'day' not in res.start or res.start['day'] == '':
     res.start['day'] = 1
 
-  if 'day' not in res.end or res.end['day'] == '':
+  if res.end.month and ('day' not in res.end or res.end['day'] == ''):
+
     res.end['day'] = calendar.monthrange(res.end.year, res.end.month)[1]
   
   return res
@@ -254,8 +255,10 @@ def parse(text):
   except ValueError:
     raise ParseException("Couldn't parse resulting datetime")
   
-  if res.end == None:
+  if res.end is None:
     return (start_datetime, None)
+  elif not res.end:
+    raise ParseException("Couldn't parse resulting datetime")
   else:
     try:
       if "month" not in res.end:

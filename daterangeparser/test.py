@@ -98,7 +98,7 @@ class WorkingParsingTest(unittest.TestCase):
       
 class FailingParsings(unittest.TestCase):
   tests = [ 
-            # Various 
+            # Various
             "27th Blah",
             "abfgsfgetgrw",
             "534th Jan 2010",
@@ -107,6 +107,8 @@ class FailingParsings(unittest.TestCase):
             "18 Octobre 2004",
             "to",
             "00000",
+            "5 to",
+            "Sept 12 to",
   ]
   
   def runTest(self):

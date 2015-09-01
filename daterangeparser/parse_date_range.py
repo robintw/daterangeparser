@@ -99,6 +99,10 @@ def post_process(res):
       res['end']['day'] = 31
       return res
     elif 'month' in res.end and 'day' not in res.end:
+
+      if not isinstance(res.end.month, int):
+        raise ParseException("Couldn't parse resulting datetime")
+
       # special case - treat bare month as a range from start to end of month
       if 'year' not in res.end or res.end.year == "":
         res['start']['year'] = today.year
@@ -108,6 +112,7 @@ def post_process(res):
 
       res['start']['day'] = 1
       res['start']['month'] = res.end.month
+
       res['end']['day'] = calendar.monthrange(res['start']['year'], res.end.month)[1]
     else:
       res['start']['day'] = res.end.day
@@ -177,12 +182,12 @@ def create_parser():
   
   time = hours("hour") + time_sep.suppress() + mins("mins") + Optional(am_pm)("meridian")
   
-  # Starting date
-  first_date = Group(Optional(time).suppress() & Optional(day).suppress() & Optional(full_day_string("day")) & Optional(month("month")) & Optional(year("year")))
-  
-  # Ending date
-  last_date = Group(Optional(time).suppress() & Optional(day).suppress() & Optional(full_day_string("day")) & Optional(month("month")) & Optional(year("year")))
-  
+  # date pattern
+  date = (
+    Optional(time).suppress() & Optional(day).suppress() & Optional(full_day_string("day")) &
+    Optional(month("month")) & Optional(year("year"))
+  )
+
   # Possible separators
   separator = oneOf(u"- -- to until \u2013 \u2014 ->", caseless=True)
   
@@ -190,7 +195,10 @@ def create_parser():
   ignoreable_chars = oneOf(", from starting beginning", caseless=True)
   
   # Final putting together of everything
-  daterange = Optional(first_date("start") + Optional(time).suppress() + separator.suppress()) + last_date("end") + Optional(time).suppress() + stringEnd
+  daterange = (
+    Optional(date("start") + Optional(time).suppress() + separator.suppress()) +
+    date("end") + Optional(time).suppress() + stringEnd()
+  )
   daterange.ignore(ignoreable_chars)
 
   return daterange

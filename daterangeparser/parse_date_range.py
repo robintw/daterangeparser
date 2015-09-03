@@ -68,22 +68,26 @@ def month_to_number(tokens):
   month_name = tokens[0].lower()
   return MONTHS[month_name]
 
-def post_process(res):
-  """Perform post-processing on the results of the date range parsing.
+def post_process(res, allow_implicit=True):
+  """
+  Perform post-processing on the results of the date range parsing.
   
   At the moment this consists mainly of ensuring that any missing information is filled in.
   For example, if no years are specified at all in the string then both years are set to the
   current year, and if one part of the string includes no month or year then these are
   filled in from the other part of the string.
   
-  Arguments:
-  
-  - ``res`` - The results from the parsing operation, as returned by the parseString function
-  
+  :param res: The results from the parsing operation, as returned by the parseString function
+  :param allow_implicit: If implicit dates are allowed
+  :return: the results with populated date information
   """
 
   # Get current date
   today = datetime.date.today()
+
+  if not allow_implicit:
+    if ('start' in res and 'day' not in res.start) or ('end' in res and 'day' not in res.end):
+      raise ParseException("Couldn't parse resulting datetime")
 
   if 'start' not in res:
     # We have a single date, not a range
@@ -203,19 +207,10 @@ def create_parser():
 
   return daterange
 
-def parse(text):
-  """Parses a date range string and returns the start and end as datetimes. 
-  
-  **Arguments:**
-  
-  - ``text`` - The string to parse
-  
-  **Returns:**
-  
-  A tuple ``(start, end)`` where each element is a datetime object. If the string only defines a single
-  date then the tuple is ``(date, None)``. All times in the datetime objects are set to 00:00 as
-  this function only parses dates.
-  
+def parse(text, allow_implicit=True):
+  """
+  Parses a date range string and returns the start and end as datetimes.
+
   **Accepted formats:**
   
   This parsing routine works with date ranges and single dates, and should work with a wide variety of
@@ -240,7 +235,12 @@ def parse(text):
   - All times are ignored, assuming they are placed either before or after each date, otherwise they will cause an error.
   - The separators that are allows as part of the date range are `to`, `until`, `-`, `--` and `->`, plus the unicode em and en dashes.
   - Other punctuation, such as commas, is ignored.
-  
+
+  :param text: The string to parse
+  :param allow_implicit: If implicit dates are allowed
+  :return: A tuple ``(start, end)`` where each element is a datetime object. If the string only defines a single
+           date then the tuple is ``(date, None)``. All times in the datetime objects are set to 00:00 as
+           this function only parses dates.
   """
   parser = create_parser()
   
@@ -248,7 +248,7 @@ def parse(text):
   result = parser.parseString(text)
   #print result.dump()
   #print "----------"
-  res = post_process(result)
+  res = post_process(result, allow_implicit)
   #print res.dump()
   
   # Create standard dd/mm/yyyy strings and then convert to Python datetime objects

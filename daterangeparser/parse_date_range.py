@@ -172,7 +172,7 @@ def create_parser():
   full_day_string.setParseAction(check_day)
   
   # Month names, with abbreviations, with action to convert to equivalent month number
-  month = oneOf(MONTHS.keys(), caseless=True)+Optional(Literal(".").suppress())
+  month = oneOf(MONTHS.keys(), caseless=True) + Optional(Literal(".").suppress())
   month.setParseAction(month_to_number)
   
   # Year
@@ -237,7 +237,8 @@ def parse(text, allow_implicit=True):
   - Other punctuation, such as commas, is ignored.
 
   :param text: The string to parse
-  :param allow_implicit: If implicit dates are allowed
+  :param allow_implicit: If implicit dates are allowed. For example, string 'May' by default treated as range
+         from May, 1st to May, 31th. Setting allow_implicit to False helps avoid it.
   :return: A tuple ``(start, end)`` where each element is a datetime object. If the string only defines a single
            date then the tuple is ``(date, None)``. All times in the datetime objects are set to 00:00 as
            this function only parses dates.

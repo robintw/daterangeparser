@@ -56,6 +56,7 @@ class WorkingParsingTest(unittest.TestCase):
         ("From 1st to 9th Jan 2008", "1/1/2008", "9/1/2008"),
         ("beGinning 1st to 9th Sept 2008", "1/9/2008", "9/9/2008"),
         ("17th, -, 19th June 1987", "17/6/1987", "19/6/1987"),
+        ("26-29 Oct. 2009", "26/10/2009", "29/10/2009")
 
         # Ignoring of times
         ("14th July 1988 06:45", "14/7/1988", None),

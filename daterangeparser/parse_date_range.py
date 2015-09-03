@@ -172,7 +172,7 @@ def create_parser():
   full_day_string.setParseAction(check_day)
   
   # Month names, with abbreviations, with action to convert to equivalent month number
-  month = oneOf(MONTHS.keys(), caseless=True)
+  month = oneOf(MONTHS.keys(), caseless=True)+Optional(Literal(".").suppress())
   month.setParseAction(month_to_number)
   
   # Year

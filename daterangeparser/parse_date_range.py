@@ -178,7 +178,7 @@ def create_parser():
 
     # Month names, with abbreviations, with action to convert to equivalent
     # month number
-    month = oneOf(MONTHS.keys(), caseless=True) + \
+    month = oneOf(list(MONTHS.keys()), caseless=True) + \
         Optional(Literal(".").suppress())
     month.setParseAction(month_to_number)
 
@@ -202,7 +202,7 @@ def create_parser():
 
     # Possible separators
     separator = oneOf(
-        u"- -- to until through till untill \u2013 \u2014 ->", caseless=True)
+        "- -- to until through till untill \u2013 \u2014 ->", caseless=True)
 
     # Strings to completely ignore (whitespace ignored by default)
     ignoreable_chars = oneOf(", from starting beginning of", caseless=True)
@@ -294,7 +294,7 @@ def parse(text, allow_implicit=True):
 def interactive_test():
     """Sets up an interactive loop for testing date strings."""
     while True:
-        text = raw_input("Enter a date range string (or 'quit'): ")
+        text = input("Enter a date range string (or 'quit'): ")
         if text.lower() == 'quit':
             break
 
@@ -312,8 +312,8 @@ def interactive_test():
         end_datetime = datetime.datetime.strptime(end_str, "%d/%m/%Y")
 
         print(text)
-        print("From: %s" % start_str)
-        print("To: %s" % end_str)
+        print(("From: %s" % start_str))
+        print(("To: %s" % end_str))
         print(start_datetime)
         print(end_datetime)
     print("----")

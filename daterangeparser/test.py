@@ -40,9 +40,9 @@ class TestWorkingParsing(unittest.TestCase):
         ("14--16th May", "14/5/XXXX", "16/5/XXXX"),
         ("14 to 16th May", "14/5/XXXX", "16/5/XXXX"),
         ("14 until 16th May", "14/5/XXXX", "16/5/XXXX"),
-        (u"14 \u2013 16th May", "14/5/XXXX", "16/5/XXXX"),
-        (u"14 \u2014 16th May", "14/5/XXXX", "16/5/XXXX"),
-        (u"14-> 16th May", "14/5/XXXX", "16/5/XXXX"),
+        ("14 \u2013 16th May", "14/5/XXXX", "16/5/XXXX"),
+        ("14 \u2014 16th May", "14/5/XXXX", "16/5/XXXX"),
+        ("14-> 16th May", "14/5/XXXX", "16/5/XXXX"),
 
         # Individual Dates
         ("14th July 1988", "14/7/1988", None),

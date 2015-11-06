@@ -43,6 +43,7 @@ Most date range formats that use specific dates (rather than 'tomorrow' or 'last
 Examples that are known to work include:
 
 - 27th-29th June 2010
+- January 10th - 11th
 - 30 May to 9th Aug
 - 3rd Jan 1980 -- 2nd Jan 2013
 - Wed 23 Jan -> Sat 16 February 2013
@@ -63,6 +64,12 @@ Function Documentation
 
 Release Notes
 -------------
+
+1.2
+^^^
+Now works on both Python 2 and Python 3
+
+Modified so that the start month is used if the end month doesn't exist (so something like "Jan 10th-11th" will now work)
 
 1.1.1
 ^^^^^

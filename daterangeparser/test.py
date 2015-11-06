@@ -105,15 +105,6 @@ class TestWorkingParsing(unittest.TestCase):
 
 
 class TestFailingParsings(unittest.TestCase):
-            result = parse(text)
-
-            self.assertEqual(result[0], start_dt,
-                             "Error with string %s.\nGot %s, should be %s" % (text, result[0], start_dt))
-            self.assertEqual(result[1], end_dt,
-                             "Error with string %s.\nGot %s, should be %s" % (text, result[1], end_dt))
-
-
-class FailingParsings(unittest.TestCase):
     tests = [
         # Various
         "27th Blah",
@@ -134,7 +125,7 @@ class FailingParsings(unittest.TestCase):
             self.assertRaises(ParseException, parse, test)
 
 
-class ImplicitDaysParsings(unittest.TestCase):
+class TestImplicitDaysParsings(unittest.TestCase):
     tests = [
         "May",
         "June to November",

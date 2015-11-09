@@ -14,9 +14,10 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from pyparsing import *
 import datetime
 import calendar
+
+from pyparsing import ParseException, Optional, Word, oneOf, nums, stringEnd, Literal
 
 MONTHS = {
     'jan': 1,
@@ -54,7 +55,7 @@ def check_day(tokens=None):
         raise ParseException("Couldn't parse resulting datetime")
 
     t = int(tokens[0])
-    if t >= 1 and t <= 31:
+    if 1 <= t <= 31:
         return t
     else:
         raise ParseException("Couldn't parse resulting datetime")
@@ -109,8 +110,7 @@ def post_process(res, allow_implicit=True):
             if not isinstance(res.end.month, int):
                 raise ParseException("Couldn't parse resulting datetime")
 
-            # special case - treat bare month as a range from start to end of
-            # month
+            # special case - treat bare month as a range from start to end of month
             if 'year' not in res.end or res.end.year == "":
                 res['start']['year'] = today.year
                 res['end']['year'] = today.year
@@ -171,13 +171,14 @@ def create_parser():
     # Day details (day number, superscript and day name)
     daynum = Word(nums, max=2)
     superscript = oneOf("th rd st nd", caseless=True)
-    day = oneOf("Mon Monday Tue Tues Tuesday Wed Weds Wednesday Thu Thur Thurs Thursday Fri Friday Sat Saturday Sun Sunday", caseless=True)
+    day = oneOf("Mon Monday Tue Tues Tuesday Wed Weds Wednesday "
+                "Thu Thur Thurs Thursday Fri Friday Sat Saturday Sun Sunday", caseless=True)
 
     full_day_string = daynum + Optional(superscript).suppress()
     full_day_string.setParseAction(check_day)
+    full_day_string.leaveWhitespace()
 
-    # Month names, with abbreviations, with action to convert to equivalent
-    # month number
+    # Month names, with abbreviations, with action to convert to equivalent month number
     month = oneOf(list(MONTHS.keys()), caseless=True) + \
         Optional(Literal(".").suppress())
     month.setParseAction(month_to_number)
@@ -196,13 +197,12 @@ def create_parser():
 
     # date pattern
     date = (
-        Optional(time).suppress() & Optional(day).suppress() & Optional(full_day_string("day")) &
+        Optional(time).suppress() & Optional(full_day_string("day")) & Optional(day).suppress() &
         Optional(month("month")) & Optional(year("year"))
     )
 
     # Possible separators
-    separator = oneOf(
-        "- -- to until through till untill \u2013 \u2014 ->", caseless=True)
+    separator = oneOf("- -- to until through till untill \u2013 \u2014 ->", caseless=True)
 
     # Strings to completely ignore (whitespace ignored by default)
     ignoreable_chars = oneOf(", from starting beginning of", caseless=True)
@@ -276,7 +276,7 @@ def parse(text, allow_implicit=True):
         raise ParseException("Couldn't parse resulting datetime")
 
     if res.end is None:
-        return (start_datetime, None)
+        return start_datetime, None
     elif not res.end:
         raise ParseException("Couldn't parse resulting datetime")
     else:
@@ -288,7 +288,7 @@ def parse(text, allow_implicit=True):
         except ValueError:
             raise ParseException("Couldn't parse resulting datetime")
 
-        return (start_datetime, end_datetime)
+        return start_datetime, end_datetime
 
 
 def interactive_test():
@@ -312,8 +312,8 @@ def interactive_test():
         end_datetime = datetime.datetime.strptime(end_str, "%d/%m/%Y")
 
         print(text)
-        print(("From: %s" % start_str))
-        print(("To: %s" % end_str))
+        print("From: %s" % start_str)
+        print("To: %s" % end_str)
         print(start_datetime)
         print(end_datetime)
     print("----")

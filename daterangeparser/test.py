@@ -40,6 +40,7 @@ class WorkingParsingTest(unittest.TestCase):
         ("14--16th May", "14/5/XXXX", "16/5/XXXX"),
         ("14 to 16th May", "14/5/XXXX", "16/5/XXXX"),
         ("14 until 16th May", "14/5/XXXX", "16/5/XXXX"),
+        (u"14 through 16th May", "14/5/XXXX", "16/5/XXXX"),
         (u"14 \u2013 16th May", "14/5/XXXX", "16/5/XXXX"),
         (u"14 \u2014 16th May", "14/5/XXXX", "16/5/XXXX"),
         (u"14-> 16th May", "14/5/XXXX", "16/5/XXXX"),
@@ -50,6 +51,7 @@ class WorkingParsingTest(unittest.TestCase):
         ("7 June", "7/6/XXXX", None),
         ("Saturday 19th July 1935", "19/7/1935", None),
         ("Sat 6 Aug", "6/8/XXXX", None),
+        ("2015 12 thursday November", "12/11/2015", None),
 
         # Ignorable characters
         ("14, July", "14/7/XXXX", None),
@@ -96,12 +98,14 @@ class WorkingParsingTest(unittest.TestCase):
             else:
                 end_dt = None
 
-            result = parse(text)
-
-            self.assertEqual(result[0], start_dt,
-                             "Error with string %s.\nGot %s, should be %s" % (text, result[0], start_dt))
-            self.assertEqual(result[1], end_dt,
-                             "Error with string %s.\nGot %s, should be %s" % (text, result[1], end_dt))
+            try:
+                result = parse(text)
+                self.assertEqual(result[0], start_dt,
+                                 "Error with string %s.\nGot %s, should be %s" % (text, result[0], start_dt))
+                self.assertEqual(result[1], end_dt,
+                                 "Error with string %s.\nGot %s, should be %s" % (text, result[1], end_dt))
+            except ParseException:
+                self.fail("Error with string %s.\nparse raised ParseException" % (text))
 
 
 class FailingParsings(unittest.TestCase):

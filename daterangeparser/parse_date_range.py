@@ -170,6 +170,7 @@ def create_parser():
   
   full_day_string = daynum + Optional(superscript).suppress()
   full_day_string.setParseAction(check_day)
+  full_day_string.leaveWhitespace()
   
   # Month names, with abbreviations, with action to convert to equivalent month number
   month = oneOf(MONTHS.keys(), caseless=True) + Optional(Literal(".").suppress())
@@ -188,7 +189,7 @@ def create_parser():
   
   # date pattern
   date = (
-    Optional(time).suppress() & Optional(day).suppress() & Optional(full_day_string("day")) &
+    Optional(time).suppress() & Optional(full_day_string("day")) & Optional(day).suppress() &
     Optional(month("month")) & Optional(year("year"))
   )
 

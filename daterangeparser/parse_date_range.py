@@ -14,9 +14,10 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from pyparsing import *
 import datetime
 import calendar
+
+from pyparsing import ParseException, Optional, Word, oneOf, nums, stringEnd, Literal
 
 MONTHS = {
     'jan': 1,
@@ -109,8 +110,7 @@ def post_process(res, allow_implicit=True):
             if not isinstance(res.end.month, int):
                 raise ParseException("Couldn't parse resulting datetime")
 
-            # special case - treat bare month as a range from start to end of
-            # month
+            # special case - treat bare month as a range from start to end of month
             if 'year' not in res.end or res.end.year == "":
                 res['start']['year'] = today.year
                 res['end']['year'] = today.year
@@ -178,8 +178,7 @@ def create_parser():
     full_day_string.setParseAction(check_day)
     full_day_string.leaveWhitespace()
 
-    # Month names, with abbreviations, with action to convert to equivalent
-    # month number
+    # Month names, with abbreviations, with action to convert to equivalent month number
     month = oneOf(list(MONTHS.keys()), caseless=True) + \
         Optional(Literal(".").suppress())
     month.setParseAction(month_to_number)
@@ -198,13 +197,12 @@ def create_parser():
 
     # date pattern
     date = (
-      Optional(time).suppress() & Optional(full_day_string("day")) & Optional(day).suppress() &
-      Optional(month("month")) & Optional(year("year"))
+        Optional(time).suppress() & Optional(full_day_string("day")) & Optional(day).suppress() &
+        Optional(month("month")) & Optional(year("year"))
     )
 
     # Possible separators
-    separator = oneOf(
-        "- -- to until through till untill \u2013 \u2014 ->", caseless=True)
+    separator = oneOf("- -- to until through till untill \u2013 \u2014 ->", caseless=True)
 
     # Strings to completely ignore (whitespace ignored by default)
     ignoreable_chars = oneOf(", from starting beginning of", caseless=True)

@@ -20,7 +20,7 @@ from .parse_date_range import parse
 from pyparsing import ParseException
 
 
-class WorkingParsingTest(unittest.TestCase):
+class TestWorkingParsing(unittest.TestCase):
     tests = [
         # Various
         ("27th-29th June 2010", "27/06/2010", "29/06/2010"),
@@ -40,10 +40,10 @@ class WorkingParsingTest(unittest.TestCase):
         ("14--16th May", "14/5/XXXX", "16/5/XXXX"),
         ("14 to 16th May", "14/5/XXXX", "16/5/XXXX"),
         ("14 until 16th May", "14/5/XXXX", "16/5/XXXX"),
-        (u"14 through 16th May", "14/5/XXXX", "16/5/XXXX"),
-        (u"14 \u2013 16th May", "14/5/XXXX", "16/5/XXXX"),
-        (u"14 \u2014 16th May", "14/5/XXXX", "16/5/XXXX"),
-        (u"14-> 16th May", "14/5/XXXX", "16/5/XXXX"),
+        ("14 through 16th May", "14/5/XXXX", "16/5/XXXX"),
+        ("14 \u2013 16th May", "14/5/XXXX", "16/5/XXXX"),
+        ("14 \u2014 16th May", "14/5/XXXX", "16/5/XXXX"),
+        ("14-> 16th May", "14/5/XXXX", "16/5/XXXX"),
 
         # Individual Dates
         ("14th July 1988", "14/7/1988", None),
@@ -100,15 +100,15 @@ class WorkingParsingTest(unittest.TestCase):
 
             try:
                 result = parse(text)
-                self.assertEqual(result[0], start_dt,
-                                 "Error with string %s.\nGot %s, should be %s" % (text, result[0], start_dt))
-                self.assertEqual(result[1], end_dt,
-                                 "Error with string %s.\nGot %s, should be %s" % (text, result[1], end_dt))
+                self.assertEqual(result[0], start_dt, "Error with string %s.\nGot %s, should be %s" % (
+                    text, result[0], start_dt))
+                self.assertEqual(result[1], end_dt, "Error with string %s.\nGot %s, should be %s" % (
+                    text, result[1], end_dt))
             except ParseException:
                 self.fail("Error with string %s.\nparse raised ParseException" % (text))
 
 
-class FailingParsings(unittest.TestCase):
+class TestFailingParsings(unittest.TestCase):
     tests = [
         # Various
         "27th Blah",
@@ -124,12 +124,12 @@ class FailingParsings(unittest.TestCase):
         "june november",
     ]
 
-    def runTest(self):
+    def test(self):
         for test in self.tests:
             self.assertRaises(ParseException, parse, test)
 
 
-class ImplicitDaysParsings(unittest.TestCase):
+class TestImplicitDaysParsings(unittest.TestCase):
     tests = [
         "May",
         "June to November",

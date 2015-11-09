@@ -12,7 +12,7 @@ Installation
 DateRangeParser can be installed from the Python Package Index by running::
 
   pip install daterangeparser
-  
+
 DateRangeParser is built upon `PyParsing <http://pyparsing.wikispaces.com/>`_, and requires the PyParsing module to be installed for it to work correctly. The command above should install PyParsing if it is not currently installed.
 
 Quickstart
@@ -27,13 +27,13 @@ Using DateRangeParser is very easy - simply follow the steps below.
 2. Run the parse function on a string::
 
     start, end = parse("3rd May-18th July 2014")
-  
+
 3. Use the results somehow::
 
     print "Start = %s" % start
     print "End = %s" % end
     print "Days between start and end = %i" % (end-start).days
-    
+
 4. That's it! Simple, isn't it.
 
 What formats will this work with?

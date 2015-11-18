@@ -53,7 +53,7 @@ setup(
         "Topic :: Text Processing :: Linguistic",
         "Topic :: Software Development :: Libraries :: Python Modules",
         "License :: OSI Approved :: GNU Lesser General Public License v2 (LGPLv2)",
-        "Programming Language :: Python"
+        "Programming Language :: Python",
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 2"],
 )

@@ -135,7 +135,8 @@ def post_process(res, allow_implicit=True):
 
         return res
 
-    if 'month' not in res.end and 'month' not in res.start and 'day' not in res.end and 'day' not in res.start:
+    if 'month' not in res.end and 'month' not in res.start and \
+            'day' not in res.end and 'day' not in res.start:
         # No months or days given, just years
         res['start']['month'] = 1
         res['start']['day'] = 1
@@ -223,8 +224,8 @@ def parse(text, allow_implicit=True):
 
     **Accepted formats:**
 
-    This parsing routine works with date ranges and single dates, and should work with a wide variety of
-    human-style string formats, including:
+    This parsing routine works with date ranges and single dates, and should
+    work with a wide variety of human-style string formats, including:
 
     - 27th-29th June 2010
     - 30 May to 9th Aug
@@ -239,19 +240,24 @@ def parse(text, allow_implicit=True):
 
     **Notes:**
 
-    - If an error encountered while parsing the date range then a `pyparsing.ParseException` will be raised.
+    - If an error encountered while parsing the date range then a
+    `pyparsing.ParseException` will be raised.
     - If no year is specified then the current year is used.
-    - All day names are ignored, so there is no checking to see whether, for example, the 23rd Jan 2013 is actually a Wednesday.
-    - All times are ignored, assuming they are placed either before or after each date, otherwise they will cause an error.
-    - The separators that are allows as part of the date range are `to`, `until`, `-`, `--` and `->`, plus the unicode em and en dashes.
+    - All day names are ignored, so there is no checking to see whether,
+    for example, the 23rd Jan 2013 is actually a Wednesday.
+    - All times are ignored, assuming they are placed either before or after
+    each date, otherwise they will cause an error.
+    - The separators that are allows as part of the date range are `to`,
+    `until`, `-`, `--` and `->`, plus the unicode em and en dashes.
     - Other punctuation, such as commas, is ignored.
 
     :param text: The string to parse
-    :param allow_implicit: If implicit dates are allowed. For example, string 'May' by default treated as range
+    :param allow_implicit: If implicit dates are allowed. For example,
+    string 'May' by default treated as range
            from May, 1st to May, 31th. Setting allow_implicit to False helps avoid it.
-    :return: A tuple ``(start, end)`` where each element is a datetime object. If the string only defines a single
-             date then the tuple is ``(date, None)``. All times in the datetime objects are set to 00:00 as
-             this function only parses dates.
+    :return: A tuple ``(start, end)`` where each element is a datetime object.
+    If the string only defines a single date then the tuple is ``(date, None)``.
+    All times in the datetime objects are set to 00:00 as this function only parses dates.
     """
     parser = create_parser()
 

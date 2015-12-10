@@ -108,9 +108,11 @@ class TestWorkingParsing(unittest.TestCase):
 
             try:
                 result = parse(text)
-                self.assertEqual(result[0], start_dt, "Error with string %s.\nGot %s, should be %s" % (
+                self.assertEqual(result[0], start_dt,
+                                 "Error with string %s.\nGot %s, should be %s" % (
                     text, result[0], start_dt))
-                self.assertEqual(result[1], end_dt, "Error with string %s.\nGot %s, should be %s" % (
+                self.assertEqual(result[1], end_dt,
+                                 "Error with string %s.\nGot %s, should be %s" % (
                     text, result[1], end_dt))
             except ParseException:
                 self.fail("Error with string %s.\nparse raised ParseException" % (text))

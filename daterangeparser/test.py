@@ -80,9 +80,15 @@ class TestWorkingParsing(unittest.TestCase):
         ("Feb to Nov", "01/02/XXXX", "30/11/XXXX"),
         ("Feb 2010 - Feb 2012", "01/02/2010", "29/02/2012"),
 
-        # Bare year - doesn't work yet
+        # Bare year
         ("2013", "01/01/2013", "31/12/2013"),
         ("1995 - 2010", "01/01/1995", "31/12/2010"),
+
+        # Straddling end of year
+        ("25 Dec - 2 Jan 2016", "25/12/2015", "02/01/2016"),
+        ("18 Nov 2015 to 14th Feb 2016", "18/11/2015", "14/02/2016"),
+        ("18 Nov 2010 to 14th Feb 2016", "18/11/2010", "14/02/2016")
+
     ]
 
     def runTest(self):

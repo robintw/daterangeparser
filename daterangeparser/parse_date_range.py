@@ -288,6 +288,15 @@ def parse(text, allow_implicit=True):
         except ValueError:
             raise ParseException("Couldn't parse resulting datetime")
 
+        if end_datetime < start_datetime:
+            # end is before beginning!
+            # This is probably caused by a date straddling the change of year
+            # without the year being given
+            # So, we assume that the start should be the previous year
+            res.start['year'] = res.start['year'] - 1
+            start_str = "%(day)s/%(month)s/%(year)s" % res.start
+            start_datetime = datetime.datetime.strptime(start_str, "%d/%m/%Y")
+
         return start_datetime, end_datetime
 
 

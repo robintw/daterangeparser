@@ -51,7 +51,6 @@ class TestWorkingParsing(unittest.TestCase):
         ("7 June", "7/6/XXXX", None),
         ("Saturday 19th July 1935", "19/7/1935", None),
         ("Sat 6 Aug", "6/8/XXXX", None),
-        ("2015 12 thursday November", "12/11/2015", None),
 
         # Ignorable characters
         ("14, July", "14/7/XXXX", None),

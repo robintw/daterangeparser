@@ -17,7 +17,7 @@
 import datetime
 import calendar
 
-from pyparsing import ParseException, Optional, Word, oneOf, nums, stringEnd, Literal
+from pyparsing import ParseException, Optional, Word, oneOf, nums, stringEnd, Literal, Group
 
 MONTHS = {
     'jan': 1,
@@ -198,8 +198,8 @@ def create_parser():
 
     # date pattern
     date = (
-        Optional(time).suppress() & Optional(full_day_string("day")) & Optional(day).suppress() &
-        Optional(month("month")) & Optional(year("year"))
+        Group(Optional(time).suppress() & Optional(full_day_string("day")) & Optional(day).suppress() &
+        Optional(month("month")) & Optional(year("year")))
     )
 
     # Possible separators
@@ -270,7 +270,6 @@ def parse(text, allow_implicit=True):
 
     # Create standard dd/mm/yyyy strings and then convert to Python datetime
     # objects
-
     if 'year' not in res.start:
         # in case only separator was given
         raise ParseException("Couldn't parse resulting datetime")

@@ -7,7 +7,7 @@ This is a Python module which allows you easily parse human-style date ranges su
 
 Users
 -----
-Please see the [documentation](<http://daterangeparser.readthedocs.org/).
+Please see the [documentation](http://daterangeparser.readthedocs.org/).
 
 Developers
 ----------
